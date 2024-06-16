@@ -1,4 +1,4 @@
-from selene import browser, have
+from selene import browser, have, command
 from tests import resourses
 
 
@@ -54,7 +54,7 @@ class RegistrationPage:
         return self
 
     def fill_current_address(self, address):
-        browser.element("#currentAddress").type(address)
+        browser.element("#currentAddress").type(address).perform(command.js.scroll_into_view)
         return self
 
     def fill_state(self, name):
