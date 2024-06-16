@@ -1,5 +1,6 @@
-from selene import browser, have
+from selene import browser, have, command
 from tests import resourses
+from data.user import User
 
 
 class RegistrationPage:
@@ -13,27 +14,27 @@ class RegistrationPage:
     def open(self):
         browser.open("/automation-practice-form")
 
-    def fill_first_name(self, value):
-        browser.element("#firstName").type(value)
+    def fill_first_name(self, first_name):
+        browser.element("#firstName").type(first_name)
         return self
 
-    def fill_second_name(self, value):
-        browser.element("#lastName").type(value)
+    def fill_second_name(self, second_name):
+        browser.element("#lastName").type(second_name)
         return self
 
-    def fill_email(self, value):
-        browser.element("#userEmail").type(value)
+    def fill_email(self, email):
+        browser.element("#userEmail").type(email)
         return self
 
     def select_gender(self, gender):
         browser.element(f"[name=gender][value={gender}]+label").click()
         return self
 
-    def fill_phone_number(self, value):
-        browser.element("#userNumber").type(value)
+    def fill_phone_number(self, phone_number):
+        browser.element("#userNumber").type(phone_number)
         return self
 
-    def fill_date_of_birth(self, month, year, day):
+    def fill_date_of_birth(self, day, month, year):
         browser.element("#dateOfBirthInput").click()
         self.month_of_birth.click()
         self.month_of_birth.all("option").element_by(have.exact_text(month)).click()
@@ -41,8 +42,8 @@ class RegistrationPage:
         browser.element(f".react-datepicker__day--0{day}").click()
         return self
 
-    def fill_subjects(self, value):
-        browser.element("#subjectsInput").type(value).press_enter()
+    def fill_subjects(self, subject):
+        browser.element("#subjectsInput").type(subject).press_enter()
         return self
 
     def fill_hobbies(self, hobby):
@@ -54,7 +55,9 @@ class RegistrationPage:
         return self
 
     def fill_current_address(self, address):
-        browser.element("#currentAddress").type(address)
+        browser.element("#currentAddress").type(address).perform(
+            command.js.scroll_into_view
+        )
         return self
 
     def fill_state(self, name):
@@ -75,32 +78,34 @@ class RegistrationPage:
         browser.element("#submit").press_enter()
         return self
 
-    def should_registered_user_info_with(
-        self,
-        full_name,
-        email,
-        gender,
-        phone,
-        date_of_birth,
-        area_of_study,
-        hobby,
-        photo,
-        address,
-        city_and_state,
-    ):
+    def fill_form(self, user: User):
+        self.fill_first_name(user.first_name)
+        self.fill_second_name(user.second_name)
+        self.fill_email(user.email)
+        self.select_gender(user.gender)
+        self.fill_phone_number(user.phone_number)
+        self.fill_date_of_birth(*user.date_of_birth)
+        self.fill_subjects(user.subjects)
+        self.fill_hobbies(user.hobbies)
+        self.upload_picture(user.picture)
+        self.fill_current_address(user.current_address)
+        self.fill_state(user.state)
+        self.fill_city(user.city)
+
+    def should_registered_user_info_with(self, user: User):
         browser.element(".modal-content").element("table").all("tr").all(
             "td"
         ).even.should(
             have.exact_texts(
-                full_name,
-                email,
-                gender,
-                phone,
-                date_of_birth,
-                area_of_study,
-                hobby,
-                photo,
-                address,
-                city_and_state,
+                f"{user.first_name} {user.second_name}",
+                user.email,
+                user.gender,
+                user.phone_number,
+                f"{user.date_of_birth[0]} {user.date_of_birth[1]},{user.date_of_birth[2]}",
+                user.subjects,
+                user.hobbies,
+                user.picture,
+                user.current_address,
+                f"{user.state} {user.city}",
             )
         )
