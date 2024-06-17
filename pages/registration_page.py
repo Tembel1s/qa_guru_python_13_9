@@ -1,5 +1,5 @@
 from selene import browser, have, command
-from tests import resourses
+import resourses
 from data.user import User
 
 

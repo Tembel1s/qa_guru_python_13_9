@@ -3,7 +3,7 @@ from data.user import User
 
 
 def test_registration_form():
-    registraton_page = RegistrationPage()
+    registration_page = RegistrationPage()
     user = User(
         first_name="Sergei",
         second_name="Melnikov",
@@ -19,7 +19,7 @@ def test_registration_form():
         city="Karnal",
     )
 
-    registraton_page.open()
-    registraton_page.fill_form(user)
-    registraton_page.submit_form()
-    registraton_page.should_registered_user_info_with(user)
+    registration_page.open()
+    registration_page.fill_form(user)
+    registration_page.submit_form()
+    registration_page.should_registered_user_info_with(user)
