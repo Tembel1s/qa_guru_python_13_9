@@ -2,12 +2,12 @@ from pages.registration_page import RegistrationPage
 
 
 def test_registration_form():
-    registraton_page = RegistrationPage()
+    registration_page = RegistrationPage()
 
-    registraton_page.open()
+    registration_page.open()
 
     (
-        registraton_page.fill_first_name("Sergei")
+        registration_page.fill_first_name("Sergei")
         .fill_second_name("Melnikov")
         .fill_email("Sergei@Melnikov.com")
         .select_gender("Male")
@@ -22,7 +22,7 @@ def test_registration_form():
         .submit_form()
     )
 
-    registraton_page.should_registered_user_info_with(
+    registration_page.should_registered_user_info_with(
         "Sergei Melnikov",
         "Sergei@Melnikov.com",
         "Male",
