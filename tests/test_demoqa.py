@@ -1,10 +1,12 @@
 from pages.registration_page import RegistrationPage
+import allure
 
 
 def test_registration_form():
     registration_page = RegistrationPage()
 
-    registration_page.open()
+    with allure.step("Открываем главную страницу"):
+        registration_page.open()
 
     (
         registration_page.fill_first_name("Sergei")
@@ -22,7 +24,8 @@ def test_registration_form():
         .submit_form()
     )
 
-    registration_page.should_registered_user_info_with(
+    with allure.step("Проверяем корректность данных регистрации"):
+        registration_page.should_registered_user_info_with(
         "Sergei Melnikov",
         "Sergei@Melnikov.com",
         "Male",
