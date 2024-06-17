@@ -42,7 +42,7 @@ class RegistrationPage:
         return self
 
     def fill_subjects(self, value):
-        browser.element("#subjectsInput").type(value).press_enter()
+        browser.element("#subjectsInput").type(value).perform(command.js.scroll_into_view).press_enter()
         return self
 
     def fill_hobbies(self, hobby):
