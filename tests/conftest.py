@@ -1,5 +1,4 @@
 import os
-
 import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -35,6 +34,8 @@ def setup_browser(request):
     )
 
     browser.config.driver = driver
+    browser.config.window_width = 1920
+    browser.config.window_height = 1080
     browser.config.base_url = "https://demoqa.com"
 
     yield browser
